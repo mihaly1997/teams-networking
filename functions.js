@@ -2,15 +2,16 @@ console.log("sal")
 
 function insertPeron ( data){
     const tbody = document.querySelector('#list tbody');
-    const firstName = data.firstName;
-    const lastName = data.lastName;
-    const link = data.link;
+    const firstName = data[0].firstName;
+    const lastName = data[0].lastName;
+    const gitHub = data[0].gitHub;
 
+    console.log({firstName,lastName,gitHub})
     tbody.innerHTML =`
     <tr >
-    <td>Mihaly</td>
-    <td>Kadar</td>
-    <td><a href="https://github.com/mihaly1997"><img src="github.png" aalt="" width="20px"></a></td>
+    <td>${firstName}</td>
+    <td>${lastName}</td>
+    <td><a href="https://github.com/${gitHub}"><img src="github.png" aalt="" width="20px"></a></td>
 </tr> `;
 }
 // printPeron (data);
@@ -19,8 +20,6 @@ function insertPeron ( data){
 fetch('persons.json')
 .then(res=> res.json())
 .then(data=>{
-    console.log(`data:`,data);
-
-    insertPeron ( data)
+   insertPeron ( data)
 });
 
