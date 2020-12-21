@@ -7,11 +7,7 @@ function insertPeron(persons){
 
 function getPersonsHtml(persons){
 
-    var r = persons.map(function(person){
-       
-        return getPersonHtml(person);
-    } ) ;
-    return r.join("")
+    return persons.map ( getPersonHtml).join("");
 }
 
 function getPersonHtml (persons){
