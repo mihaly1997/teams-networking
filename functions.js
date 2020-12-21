@@ -1,20 +1,23 @@
 console.log("sal")
 
-function insertPeron ( data){
+function insertPeron(persons){
     const tbody = document.querySelector('#list tbody');
-    const firstName = data[0].firstName;
-    const lastName = data[0].lastName;
-    const gitHub = data[0].gitHub;
+    tbody.innerHTML = getPersonsHtml(persons); 
+}
 
-    console.log({firstName,lastName,gitHub})
-    tbody.innerHTML =`
+function getPersonsHtml(persons){
+    return getPersonHtml(persons[0]) + getPersonHtml(persons[1]);
+}
+
+function getPersonHtml (persons){
+    const gitHub = persons.gitHub;
+    return `
     <tr >
-    <td>${firstName}</td>
-    <td>${lastName}</td>
+    <td>${persons.firstName}</td>
+    <td>${persons.lastName}</td>
     <td><a href="https://github.com/${gitHub}"><img src="github.png" aalt="" width="20px"></a></td>
 </tr> `;
 }
-// printPeron (data);
 
 
 fetch('persons.json')
