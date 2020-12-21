@@ -15,5 +15,5 @@ thead{
 #list tr:nth-child(
 even
 ){
-    background-color: burlywood;
+    background-color: rgb(218, 216, 214);
 }
