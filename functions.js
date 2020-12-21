@@ -6,7 +6,12 @@ function insertPeron(persons){
 }
 
 function getPersonsHtml(persons){
-    return getPersonHtml(persons[0]) + getPersonHtml(persons[1]);
+
+    var r = persons.map(function(person){
+       
+        return getPersonHtml(person);
+    } ) ;
+    return r.join("")
 }
 
 function getPersonHtml (persons){
@@ -15,7 +20,8 @@ function getPersonHtml (persons){
     <tr >
     <td>${persons.firstName}</td>
     <td>${persons.lastName}</td>
-    <td><a href="https://github.com/${gitHub}"><img src="github.png" aalt="" width="20px"></a></td>
+    <td><a href="https://github.com/${gitHub}">
+    <img src="github.png" aalt="" width="20px"></a></td>
 </tr> `;
 }
 
