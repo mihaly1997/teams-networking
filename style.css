@@ -8,6 +8,7 @@ table{
 }
 thead{
     background-color: blue;
+    color: #fff;
 }
 #list td{
     border: 1px solid #071e9e;
