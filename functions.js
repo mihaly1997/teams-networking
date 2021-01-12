@@ -1,19 +1,19 @@
 const API = {
     CREATE: {
-        URL: "create.json",
-        METHOD: "GET" //POST
+        URL: "http://localhost:3000/teams-json/create",
+        METHOD: "POST" 
     },
     READ: {
-        URL: "team.json",
+        URL: "http://localhost:3000/teams-json",
         METHOD: "GET"
     },
     UPDATE: {
-       URL: "",
-        METHOD: "GET"
+       URL: "http://localhost:3000/teams-json/update",
+        METHOD: "PUT"
     },
     DELETE: {
-        URL: "delete.json",
-        METHOD: "GET"
+        URL: "http://localhost:3000/teams-json/delete",
+        METHOD: "DELETE"
     }
 };
 function insertPerson(persons){
@@ -26,15 +26,15 @@ function getPersonsHtml(persons){
     return persons.map ( getPersonHtml).join("");
 }
 
-function getPersonHtml (persons){
-    const gitHub = persons.gitHub;
+function getPersonHtml (person){
+    const gitHub = person.gitHub;
     return `
     <tr >
-    <td>${persons.firstName}</td>
-    <td>${persons.lastName}</td>
+    <td>${person.firstName}</td>
+    <td>${person.lastName}</td>
     <td><a href="https://github.com/${gitHub}">
-    <img src="github.png" aalt="" width="20px"></a></td>
-    <td> <a hre="${API.DELETE.URL}?id=${persons.id}">&#10006</a>
+    <img src="github.png" alt="" width="20px"></a></td>
+    <td> <a href="#" class="delete-row" data-id="${person.id}">&#10006</a>
     </td>
 </tr> `;
 }
@@ -42,7 +42,7 @@ function getPersonHtml (persons){
 let allPersons = [];
 
 function loadList(){
-    fetch('persons.json')
+    fetch(API.READ.URL)
     .then(res=> res.json())
     .then(data=>{
         allPersons= data;
@@ -62,25 +62,21 @@ function searchPersons(text){
     });
 }
 
-const search = document.getElementById('search')
-search.addEventListener("input", e => {
-    const text = e.target.value
-    const filtrate = searchPersons(text);
-    insertPerson(filtrate);
-});
-
 function vaveTeamMember() {
     const firstName = document.querySelector("input[name=firstName").value;
     const lastName = document.querySelector("input[name=lastName").value;
     const gitHub = document.querySelector("input[name=gitHub").value;
     
-    const person = (
+    const person = {
         firstName, lastName,  gitHub
-    );
-    console.info('saving...', person, JSON.stringify(person))
+    };
+    console.info('saving: ', person, JSON.stringify(person))
 
     fetch(API.CREATE.URL,{
         method: API.CREATE.METHOD,
+        headers: {
+            "Content-Type": "application/json"
+          },
         body:API.CREATE.METHOD === "GET" ? null : JSON.stringify(person)
     })
     .then(res => res.json())
@@ -91,8 +87,44 @@ function vaveTeamMember() {
         }
     });
 };
-
-const savebtn = document.querySelector("#list button"); 
-savebtn.addEventListener("click", () => {
-    vaveTeamMember();
+function deleteTermMember (id){
+    fetch("http://localhost:3000/teams-json/delete", {
+  method: "DELETE",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ id })
 });
+}
+   
+
+function addEventListener(){
+
+    const search = document.getElementById('search')
+    search.addEventListener("input", e => {
+        const text = e.target.value
+        const filtrate = searchPersons(text);
+        insertPerson(filtrate);
+    });
+    
+    
+    
+    
+    const savebtn = document.querySelector("#list tfoot button"); 
+    savebtn.addEventListener("click", () => {
+        vaveTeamMember();
+    });
+
+    const table = document.querySelector("#list tbody ");
+    table.addEventListener("click", (e) => {
+        const target =e.target
+        if(target.matches("a.delete-row")) {
+            console.warn( "click" .target );
+            const id=target.getAttribute("data-id");
+            deleteTermMember(id);      
+          }
+        
+    });
+}
+
+addEventListener()
